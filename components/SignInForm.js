@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import axios from 'axios';
+import firebase from 'firebase';
 
 const ROOT_URL = 'https://us-central1-one-time-password-21950.cloudfunctions.net';
 
@@ -12,11 +13,12 @@ class SignInForm extends Component {
     const { phone, code } = this.state;
 
     try {
-      let response = await axios.post(`${ROOT_URL}/verifyOneTimePassword`, {
+      let { data } = await axios.post(`${ROOT_URL}/verifyOneTimePassword`, {
         phone: phone,
         code: code
       });
-      console.log(response.data.token);
+
+      firebase.auth().signInWithCustomToken(data.token);
     } catch (err) {
       console.log(err.response.data);
     }
