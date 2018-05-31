@@ -12,10 +12,11 @@ class SignInForm extends Component {
     const { phone, code } = this.state;
 
     try {
-      await axios.post(`${ROOT_URL}/verifyOneTimePassword`, {
+      let response = await axios.post(`${ROOT_URL}/verifyOneTimePassword`, {
         phone: phone,
         code: code
       });
+      console.log(response.data.token);
     } catch (err) {
       console.log(err.response.data);
     }
